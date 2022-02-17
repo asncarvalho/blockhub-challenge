@@ -21,10 +21,8 @@ export class UsersService {
 
     const userExists = await this.existsByUsername(username);
 
-    console.log(userExists);
-
     if (userExists) {
-      throw new ConflictException('Username Already Exists!');
+      throw new ConflictException('Username already exists!');
     } else {
       const newuser = new this.userModel(createUserDto);
       newuser.save();
@@ -53,7 +51,6 @@ export class UsersService {
 
   async existsByUsername(usrname: string): Promise<any> {
     const user = await this.userModel.exists({ username: usrname });
-    console.log(user);
     if (user != null) {
       return true;
     } else return false;
