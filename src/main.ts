@@ -8,6 +8,14 @@ async function bootstrap() {
 
   const config = new DocumentBuilder()
     .setTitle('Blockhub-Challenge API')
+    .setDescription(
+      `
+        Uma api contendo CRUD de projetos e colaboradores, utilizada para gestão de projetos.\n
+        Para ter acesso a todos os endpoints da aplicação, primeiro crie um usuário, e depois faça
+        a autenticação na rota /auth/login, logo depois de fazer a autenticação, é recebido um access_token, 
+        utilize ele para autorizar os endpoints (Refresh de uma hora.).
+      `,
+    )
     .setVersion('0.0.1')
     .addBearerAuth(
       {
