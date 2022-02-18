@@ -16,6 +16,7 @@ export class ColaboradorService {
   ) {}
 
   create(createColaboradorDto: CreateColaboradorDto) {
+    createColaboradorDto.admissao = new Date(createColaboradorDto.admissao);
     const newColaborador = new this.colaboradorModel(createColaboradorDto);
     return newColaborador.save();
   }
@@ -25,14 +26,18 @@ export class ColaboradorService {
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} colaborador`;
+    return this.colaboradorModel.findById(id);
   }
 
   update(id: string, updateColaboradorDto: UpdateColaboradorDto) {
-    return `This action updates a #${id} colaborador`;
+    return this.colaboradorModel.findByIdAndUpdate(
+      { _id: id }, //Procurar o Objeto pelo id
+      { $set: updateColaboradorDto }, //O que deseja alterar
+      { new: true }, //Vai pegar as informações do objeto e alterar.
+    );
   }
 
   remove(id: string) {
-    return `This action removes a #${id} colaborador`;
+    return this.colaboradorModel.deleteOne({ _id: id }).exec();
   }
 }
