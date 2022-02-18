@@ -4,13 +4,8 @@ import {
   Injectable,
 } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model, Types } from 'mongoose';
-import { ColaboradorController } from 'src/colaborador/colaborador.controller';
-import {
-  Colaborador,
-  ColaboradorDocument,
-} from 'src/colaborador/entities/colaborador.entity';
-import Utils from 'src/utils/utils';
+import { Model } from 'mongoose';
+import { withLatestFrom } from 'rxjs';
 import { CreateProjetoDto } from './dto/create-projeto.dto';
 import { UpdateProjetoDto } from './dto/update-projeto.dto';
 import { Projeto, ProjetoDocument } from './entities/projeto.entity';
@@ -34,7 +29,7 @@ export class ProjetosService {
     if (await this.projectExists(createProjetoDto.nome)) {
       throw new ConflictException('Nome já existe!');
     } else {
-      const newProjeto = await new this.projetoModel(createProjetoDto);
+      const newProjeto = new this.projetoModel(createProjetoDto);
       return newProjeto.save();
     }
   }
@@ -51,13 +46,16 @@ export class ProjetosService {
     updateProjetoDto.inicio = new Date(updateProjetoDto.inicio);
     updateProjetoDto.fim = new Date(updateProjetoDto.fim);
 
-    const { inicio, fim } = await this.projetoModel.findById(id);
-    const { colaboradorId } = await this.projetoModel.findById(id);
-    const { alt_inicio }: any = updateProjetoDto.inicio;
-    const { alt_fim }: any = updateProjetoDto.fim;
-    const { alt_colaboradorId }: any = updateProjetoDto.colaboradorId;
+    const { inicio, fim, nome } = await this.projetoModel.findById(id);
+    const alt_inicio = updateProjetoDto.inicio;
+    const alt_fim = updateProjetoDto.fim;
 
-    if (inicio != alt_inicio || fim != alt_fim) {
+    const projetoModel = await this.projetoModel.findById(id);
+
+    projetoModel.update({ $set: { colaboradorId: [] } });
+
+    if (+inicio !== +alt_inicio || +fim !== +alt_fim) {
+      console.log(+inicio !== +alt_inicio, +fim !== +alt_fim);
       if (await this.checkDatesProject(updateProjetoDto)) {
         throw new BadRequestException(
           'Um ou mais colaboradores já estam em um projeto no período de tempo informado.',
@@ -65,12 +63,17 @@ export class ProjetosService {
       }
     }
 
-    if (await this.projectExists(updateProjetoDto.nome)) {
-      throw new ConflictException('Nome já existe!');
-    } else {
+    if (!(nome == updateProjetoDto.nome)) {
+      if (await this.projectExists(updateProjetoDto.nome)) {
+        throw new ConflictException('Nome já existe!');
+      }
     }
 
-    return `This action updates a #${id} projeto`;
+    return this.projetoModel.findByIdAndUpdate(
+      { _id: id }, //Procurar o Objeto pelo id
+      { $set: updateProjetoDto }, //O que deseja alterar
+      { new: true }, //Vai pegar as informações do objeto e alterar.
+    );
   }
 
   remove(id: string) {

@@ -1,12 +1,4 @@
-import { Type } from 'class-transformer';
-import {
-  IsArray,
-  IsBoolean,
-  IsDateString,
-  IsMongoId,
-  IsString,
-  ValidateNested,
-} from 'class-validator';
+import { IsBoolean, IsDateString, IsMongoId, IsString } from 'class-validator';
 import { Types } from 'mongoose';
 
 export class CreateProjetoDto {
