@@ -42,6 +42,10 @@ export class UsersService {
     return this.userModel.deleteOne({ _id: id }).exec();
   }
 
+  async findbyUsername(username: string) {
+    return this.userModel.findOne({ username }).exec();
+  }
+
   async existsByUsername(usrname: string): Promise<any> {
     const user = await this.userModel.exists({ username: usrname });
     if (user != null) {
