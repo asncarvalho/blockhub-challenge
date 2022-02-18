@@ -46,7 +46,7 @@ Como rodar a aplicação?
 
 Como utilizar:
 
-1) Primeiro crie um usuário (/users), unica rota que não precisa estar autenticado.
+1) Primeiro crie um usuário na rota "/users" utilizando o metodo POST (qualquer rota exceto esta e a de autenticação, são liberadas pra um 'guest', para as outras, precisa estar autenticado) 
 2) Depois faça a autenticação através da rota "/auth/login"
 3) Depois da autenticação, o usuário obtera acesso a todos os endpoints.
 
