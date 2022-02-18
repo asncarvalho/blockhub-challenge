@@ -33,9 +33,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   //Create
-  @UseGuards(JwtAuthGuard)
   @Post()
-  @ApiBearerAuth('access-token')
   @ApiOperation({ summary: 'Cadastrar um usuário' })
   @ApiResponse({
     status: 201,
