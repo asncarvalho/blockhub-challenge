@@ -1,3 +1,7 @@
+import * as dotenv from 'dotenv';
+
+dotenv.config();
+
 export const jwtSecret = {
-  secret: 'apps3cr3t123',
+  secret: process.env.APP_SECRET,
 };

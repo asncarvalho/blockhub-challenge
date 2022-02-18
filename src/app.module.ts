@@ -5,12 +5,14 @@ import { UsersModule } from './users/users.module';
 import { ProjetosModule } from './projetos/projetos.module';
 import { ColaboradorModule } from './colaborador/colaborador.module';
 
+import * as dotenv from 'dotenv';
+dotenv.config();
+const mongoAccess: string = process.env.MONGODBCONN;
+
 @Module({
   imports: [
     AuthModule,
-    MongooseModule.forRoot(
-      'mongodb+srv://devasnc:14d4rLqRpjMNouJc@cluster0.vykvv.mongodb.net/test',
-    ),
+    MongooseModule.forRoot(mongoAccess),
     UsersModule,
     ProjetosModule,
     ColaboradorModule,

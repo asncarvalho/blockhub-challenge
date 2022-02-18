@@ -1,4 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
+import { ApiProperty } from '@nestjs/swagger';
 import { Document } from 'mongoose';
 
 export type UserDocument = User & Document;
@@ -9,12 +10,15 @@ export class User {
     unique: true,
     index: true,
   })
+  @ApiProperty()
   username: string;
 
   @Prop()
+  @ApiProperty()
   password: string;
 
   @Prop({ default: true })
+  @ApiProperty()
   active: boolean;
 }
 
