@@ -3,7 +3,7 @@
 
 >Status : Concluído. ✔️
 
-### Um api contendo CRUD de projetos e colaboradores, utilizada para gestão de projetos.
+### Uma api contendo CRUD de projetos e colaboradores, utilizada para gestão de projetos.
 
 ## Os campos do modelo principal (Usuário) são:
 
